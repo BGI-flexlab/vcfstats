@@ -211,20 +211,22 @@ public class SampleVCFReport {
         }else
             mTotalPassedFilters++;
 
+        if(gt.isNoCall()) {
+            mNoCall++;
+            return;
+        }
+
         if(gt.isHomRef()){
             mTotalUnchanged ++;
             return;
         }
 
-        if(!acceptableGenotype(gt))
-            return;
+
+//        if(!acceptableGenotype(gt))
+//            return;
 
         VariantType type = VariantType.determineType(vc, sample);
 
-        if(gt.isNoCall()) {
-            mNoCall++;
-            return;
-        }
 
         if(gt.hasExtendedAttribute("GP")){
             String GP = (String)gt.getExtendedAttribute("GP");

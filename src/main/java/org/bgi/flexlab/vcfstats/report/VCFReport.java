@@ -63,8 +63,6 @@ public class VCFReport {
         SampleVCFReport sampleReport;
         for(String sample: vc.getSampleNames()){
             Genotype gt = vc.getGenotype(sample);
-            if(!gt.isCalled())
-                return;
 
             if(perSampleVCFReports.containsKey(sample))
                 sampleReport = perSampleVCFReports.get(sample);

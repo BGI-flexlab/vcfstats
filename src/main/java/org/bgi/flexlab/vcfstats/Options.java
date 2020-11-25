@@ -11,7 +11,7 @@ public class Options {
 
     final String SOFTWARE_NAME= "vcfstats";
     final String SOFTWARE_VERSION_NUMBER = "0.1";
-    final String LAST_UPDATE = "2020-11-24";
+    final String LAST_UPDATE = "2020-11-25";
 
     private boolean countVarLength = true;
     private String infile;
@@ -36,14 +36,14 @@ public class Options {
         sb.append("\nAuthor     : huangzhibo@genomics.cn");
         sb.append("\nLast update: ");
         sb.append(LAST_UPDATE);
-        sb.append("\nNote       : Read data from plain text file and write it into Excel\n");
+        sb.append("\nNote       : BGI-lowpass imputation vcf stats\n");
         sb.append("\nOptions:\n");
         return sb.toString();
     }
 
     public void parse(String[] args) {
         String header = helpHeader();
-        String footer = "\nPlease report issues at https://github.com/huangzhibo/Data2Excel/issues";
+        String footer = "\nPlease report issues at https://github.com/BGI-flexlab/vcfstats/issues";
 
         options.addOption(Option.builder("i")
                 .longOpt("input")
