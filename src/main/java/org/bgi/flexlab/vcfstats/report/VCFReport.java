@@ -38,14 +38,14 @@ public class VCFReport {
     private Options options;
     private VCFFileReader vcfReader;
 
-    public VCFReport(Options options){
+    public VCFReport(Options options) {
         perSampleVCFReports = new HashMap<>();
         this.options = options;
-        if(options.getDbsnp() != null)
+        if (options.getDbsnp() != null)
             vcfReader = new VCFFileReader(new File(options.getDbsnp()));
     }
 
-    public void stats(){
+    public void stats() {
         VCFFileReader reader = new VCFFileReader(new File(options.getInfile()), false);
 
         CloseableIterator<VariantContext> it = reader.iterator();
@@ -55,16 +55,16 @@ public class VCFReport {
         }
     }
 
-    public void parseVariation(VariantContext vc){
+    public void parseVariation(VariantContext vc) {
 
-        if(options.getDbsnp() != null)
+        if (options.getDbsnp() != null)
             vc = setDbSNP(vc);
 
         SampleVCFReport sampleReport;
-        for(String sample: vc.getSampleNames()){
+        for (String sample : vc.getSampleNames()) {
             Genotype gt = vc.getGenotype(sample);
 
-            if(perSampleVCFReports.containsKey(sample))
+            if (perSampleVCFReports.containsKey(sample))
                 sampleReport = perSampleVCFReports.get(sample);
             else {
                 sampleReport = new SampleVCFReport(options.isCountVarLength());
@@ -84,30 +84,30 @@ public class VCFReport {
             if (dbsnpvc.getStart() != vc.getStart() || dbsnpvc.getEnd() != vc.getEnd())
                 continue;
 
-            for(Allele allele: vc.getAlternateAlleles()){
-                for(Allele dnsnpAllele: dbsnpvc.getAlternateAlleles()) {
-                    if(allele.equals(dnsnpAllele)) {
+            for (Allele allele : vc.getAlternateAlleles()) {
+                for (Allele dnsnpAllele : dbsnpvc.getAlternateAlleles()) {
+                    if (allele.equals(dnsnpAllele)) {
                         id = dbsnpvc.getID();
                         break;
                     }
                 }
-                if(id != null)
+                if (id != null)
                     break;
             }
-            if(id != null)
+            if (id != null)
                 break;
         }
 
-        if(id != null) {
+        if (id != null) {
             return new VariantContextBuilder(vc).id(id).make();
         }
         return vc;
     }
 
     public void writeReport() throws IOException {
-        for(String sample: perSampleVCFReports.keySet()){
+        for (String sample : perSampleVCFReports.keySet()) {
             File report = new File(options.getOutdir(), sample + ".vcfstats.report.txt");
-            FileWriter fileWritter = new FileWriter(report,false);
+            FileWriter fileWritter = new FileWriter(report, false);
             fileWritter.write(REPORT_HEADER);
             fileWritter.write(perSampleVCFReports.get(sample).getReport());
             fileWritter.close();

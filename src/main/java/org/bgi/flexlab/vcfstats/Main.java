@@ -1,6 +1,5 @@
 package org.bgi.flexlab.vcfstats;
 
-import htsjdk.variant.variantcontext.VariantContext;
 import org.bgi.flexlab.vcfstats.report.VCFReport;
 
 import java.io.IOException;
