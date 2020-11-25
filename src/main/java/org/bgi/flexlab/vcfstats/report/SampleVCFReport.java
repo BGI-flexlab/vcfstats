@@ -23,7 +23,6 @@ import htsjdk.variant.variantcontext.VariantContext;
 import org.bgi.flexlab.vcfstats.util.Histogram;
 import org.bgi.flexlab.vcfstats.util.Pair;
 import org.bgi.flexlab.vcfstats.util.StatsUtils;
-import org.bgi.flexlab.vcfstats.VariantType;
 
 import java.util.ArrayList;
 import java.util.List;
