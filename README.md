@@ -10,7 +10,6 @@ Options:
  -h,--help              Print this help.
  -i,--input <FILE>      input file(VCF). [request]
  -o,--output <String>   report outdir [request]
- -q,--qual <Float>      the minimum phred-scaled confidence threshold at which variants should be counted [0]
  ```
 
 ### 统计指标说明
