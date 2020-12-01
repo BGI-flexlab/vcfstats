@@ -12,9 +12,8 @@ public class Options {
     final String SOFTWARE_NAME = "vcfstats";
     private boolean countVarLength = false;
     private String infile;
-    private String outdir = null;
+    private String outfile = null;
     private String dbsnp;
-    private Float qual = 0.0f;
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
     String compile_date = df.format(new Date());
@@ -57,13 +56,7 @@ public class Options {
                 .longOpt("output")
                 .hasArg()
                 .argName("String")
-                .desc("report outdir [request]")
-                .build());
-        options.addOption(Option.builder("q")
-                .longOpt("qual")
-                .hasArg()
-                .argName("Float")
-                .desc("the minimum phred-scaled confidence threshold at which variants should be counted [0]")
+                .desc("report outfile [request]")
                 .build());
         options.addOption(Option.builder("d")
                 .longOpt("dbsnp")
@@ -97,11 +90,7 @@ public class Options {
         infile = cmdLine.getOptionValue("input");
 
         if (cmdLine.hasOption("output")) {
-            outdir = cmdLine.getOptionValue("output");
-        }
-
-        if (cmdLine.hasOption("qual")) {
-            qual = Float.parseFloat(cmdLine.getOptionValue("qual", "0.0"));
+            outfile = cmdLine.getOptionValue("output");
         }
 
         if (cmdLine.hasOption("dbsnp")) {
@@ -117,16 +106,12 @@ public class Options {
         return infile;
     }
 
-    public String getOutdir() {
-        return outdir;
+    public String getOutfile() {
+        return outfile;
     }
 
     public String getDbsnp() {
         return dbsnp;
-    }
-
-    public Float getQual() {
-        return qual;
     }
 
     public boolean isCountVarLength() {
@@ -145,20 +130,6 @@ public class Options {
             e.printStackTrace();
         }
         return appVersion;
-    }
-
-
-    /**
-     * 测试
-     *
-     * @param args
-     * @throws Exception
-     */
-    public static void main(String[] args) throws Exception {
-        String[] arg = {"-i", "test.txt", "-i", "test2.txt"};
-        Options parameter = new Options();
-        parameter.parse(arg);
-        System.out.println(parameter.getInfile());
     }
 }
 

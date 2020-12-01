@@ -18,7 +18,6 @@ package org.bgi.flexlab.vcfstats.report;
 
 import htsjdk.samtools.util.CloseableIterator;
 import htsjdk.variant.variantcontext.Allele;
-import htsjdk.variant.variantcontext.Genotype;
 import htsjdk.variant.variantcontext.VariantContext;
 import htsjdk.variant.variantcontext.VariantContextBuilder;
 import htsjdk.variant.vcf.VCFFileReader;
@@ -48,9 +47,7 @@ public class VCFReport {
     public void stats() {
         VCFFileReader reader = new VCFFileReader(new File(options.getInfile()), false);
 
-        CloseableIterator<VariantContext> it = reader.iterator();
-        while (it.hasNext()) {
-            VariantContext vc = it.next();
+        for (VariantContext vc : reader) {
             parseVariation(vc);
         }
     }
@@ -62,7 +59,6 @@ public class VCFReport {
 
         SampleVCFReport sampleReport;
         for (String sample : vc.getSampleNames()) {
-            Genotype gt = vc.getGenotype(sample);
 
             if (perSampleVCFReports.containsKey(sample))
                 sampleReport = perSampleVCFReports.get(sample);
@@ -105,12 +101,17 @@ public class VCFReport {
     }
 
     public void writeReport() throws IOException {
+        File report = new File(options.getOutfile());
+        FileWriter fileWritter = new FileWriter(report, false);
+        fileWritter.write(REPORT_HEADER);
+        int size = perSampleVCFReports.size();
+        int index = 0;
         for (String sample : perSampleVCFReports.keySet()) {
-            File report = new File(options.getOutdir(), sample + ".vcfstats.report.txt");
-            FileWriter fileWritter = new FileWriter(report, false);
-            fileWritter.write(REPORT_HEADER);
             fileWritter.write(perSampleVCFReports.get(sample).getReport());
-            fileWritter.close();
+            index += 1;
+            if (index < size)
+                fileWritter.write("\n\n");
         }
+        fileWritter.close();
     }
 }
